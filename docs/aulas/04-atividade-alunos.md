@@ -190,9 +190,11 @@ const { token, login, logout } = useAuth();
 Toda requisição de escrita leva um cabeçalho `Authorization` com o token:
 
 ```jsx
+import { API_URL } from "../config"; // ajuste o caminho conforme a pasta do arquivo
+
 const { token } = useAuth();
 
-await fetch("http://localhost:3000/notificacoes", {
+await fetch(`${API_URL}/notificacoes`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -201,6 +203,8 @@ await fetch("http://localhost:3000/notificacoes", {
   body: JSON.stringify(novaNotificacao),
 });
 ```
+
+`API_URL` é o mesmo módulo de configuração criado no encontro 8 — a URL da API do seu grupo. Nenhum `fetch` a partir de hoje deveria ter um endereço escrito na mão.
 
 - **`method`** — muda conforme a operação (`POST`, `PUT`, `DELETE`).
 - **`"Content-Type": "application/json"`** — avisa a API que o corpo é JSON. Sem isso, ela pode não conseguir ler o `body`.
@@ -239,6 +243,7 @@ git checkout -b seu-nome-22-09
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { API_URL } from "../config";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -251,7 +256,7 @@ function Login() {
     e.preventDefault();
     setErro(null);
     try {
-      const resposta = await fetch("http://localhost:3000/auth/login", {
+      const resposta = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, senha }),
@@ -381,9 +386,9 @@ Grupo escolhe uma branch, abre PR, revisa, faz merge. Todos rodam `git checkout 
 
 ---
 
-## Material extra (opcional)
+## Se o CORS bloquear só o login/CRUD (não o `GET`)
 
-Os `fetch` deste encontro (login e CRUD) usam `http://localhost:3000`. Se o grupo já apontou o front-end para a **API no servidor da escola** ([`extra-consumir-api-do-servidor.md`](extra-consumir-api-do-servidor.md)), use a `API_URL` de `src/config.js` também aqui — e confirme que o `cors` da API do servidor libera os cabeçalhos `Content-Type` e `Authorization`, senão o login e as escritas falham no *preflight* mesmo com o `GET` da lista funcionando.
+O `GET` da lista funciona desde o encontro 8. Se agora, com login e CRUD, aparecer erro de CORS de novo, o motivo mais comum é a API do grupo aceitar a origem mas não os cabeçalhos extras (`Authorization`, `Content-Type`) nem os métodos de escrita no *preflight*. Ver "CORS além do básico" em [`extra-consumir-api-do-servidor.md`](extra-consumir-api-do-servidor.md).
 
 ---
 

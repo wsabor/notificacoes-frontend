@@ -37,6 +37,14 @@ function NovaNotificacaoForm({ onAdicionar }) {
         placeholder="Texto"
         className="border border-gray-200 rounded-lg px-3 py-2"
       />
+      <select
+        value={canal}
+        onChange={(e) => setCanal(e.target.value)}
+        className="border border-gray-200 rounded-lg px-3 py-2"
+      >
+        <option value="PUSH">Push</option>
+        <option value="EMAIL">E-mail</option>
+      </select>
       <Button variant="destaque">Adicionar notificação</Button>
     </form>
   );

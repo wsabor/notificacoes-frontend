@@ -349,6 +349,14 @@ function NovaNotificacaoForm({ onAdicionar }) {
         placeholder="Texto"
         className="border border-gray-200 rounded-lg px-3 py-2"
       />
+      <select
+        value={canal}
+        onChange={(e) => setCanal(e.target.value)}
+        className="border border-gray-200 rounded-lg px-3 py-2"
+      >
+        <option value="PUSH">Push</option>
+        <option value="EMAIL">E-mail</option>
+      </select>
       <Button variant="destaque">Adicionar notificação</Button>
     </form>
   );
@@ -359,7 +367,8 @@ export default NovaNotificacaoForm;
 
 Lendo por partes:
 
-- **Três estados controlados** — um por campo. Cada `<input>`/`<textarea>` tem `value={...}` e `onChange={...}`.
+- **Quatro estados controlados** — um por campo, `canal` incluído. Cada `<input>`/`<textarea>`/`<select>` tem `value={...}` e `onChange={...}`; o padrão é o mesmo que a Parte 4 já ensinou, só muda a tag.
+- **`<select>` também é controlado.** Sem o `value={canal}` e o `onChange={(e) => setCanal(e.target.value)}`, o `canal` nunca mudaria de `"PUSH"` — todo mundo que testasse o formulário criaria só notificações PUSH, e o filtro "E-mail" nunca mostraria nada criado ali. É o mesmo ciclo tecla→estado→campo da Parte 4, só que disparado pela escolha do `<option>` em vez de digitação.
 - **`onAdicionar`** é uma prop (função vinda do `App`). O formulário monta o objeto da notificação e **entrega para o pai** — ele mesmo não guarda a lista. É elevação de estado de novo: o resultado sobe.
 - **`if (!titulo.trim()) return;`** — validação simples: sem título (ou só espaços), não faz nada.
 - **`id: Date.now()`** — um número único o suficiente para servir de `key` enquanto os dados são locais. No encontro 8 o `id` virá do banco.
@@ -462,6 +471,7 @@ Grupo escolhe uma branch, abre PR, revisa, faz merge. Todos rodam `git checkout 
 | Adicionei uma notificação e a lista não mudou | Você mutou o array (`notificacoes.push(...)`) em vez de criar um novo (`[nova, ...atual]`). |
 | O campo de texto não deixa digitar nada | `value={titulo}` sem o `onChange` correspondente — o campo fica travado no valor do estado. |
 | `key` warning no console | Faltou `key={n.id}` no `.map` da `NotificationList`. |
+| `npm run lint` acusa `'setCanal' is assigned a value but never used` | Falta o `<select>` de canal, ou ele existe mas sem `onChange={(e) => setCanal(e.target.value)}`. Sem isso, toda notificação criada pelo formulário nasce com `canal: "PUSH"`, e o filtro "E-mail" nunca mostra o que foi criado ali. |
 
 ---
 
@@ -471,7 +481,8 @@ Grupo escolhe uma branch, abre PR, revisa, faz merge. Todos rodam `git checkout 
 - [ ] `FilterBar` extraído, com o estado do filtro permanecendo no `App`
 - [ ] Filtro realmente aplicado: clicar no chip muda a lista na tela
 - [ ] Formulário controlado adicionando notificações **sem mutar** o array
-- [ ] Testado: nova notificação aparece no topo, sem recarregar a página
+- [ ] `<select>` de canal controlado (`value`/`onChange`) — `npm run lint` sem avisos de variável não usada
+- [ ] Testado: nova notificação aparece no topo, sem recarregar a página; escolher "E-mail" no formulário e depois filtrar por "E-mail" mostra ela
 - [ ] Pull Request revisado e mergeado
 - [ ] Todos atualizaram a `main` local antes de sair
 
