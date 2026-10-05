@@ -2,7 +2,7 @@
 
 **PEND — Programação Front-End** · opcional, para depois do encontro 8
 
-> **Vocês não precisam de nada daqui para terminar o encontro 8.** O básico — `.env.local`, `src/config.js`, `app.use(cors())` — já está em `03-atividade-alunos.md` e é suficiente para a lista carregar com carregando/erro tratados. Venham aqui se: quiserem entender CORS com mais profundidade, a API do grupo usar Fastify em vez de Express, precisarem confirmar o CORS sem depender do navegador, ou esbarrarem num erro que a tabela do encontro 8 não cobriu. Duas partes daqui voltam a ser úteis mais pra frente — o CORS restrito por origem (encontro 9, quando entram os cabeçalhos do login) e o aviso sobre HTTPS (encontro 16, quando o front for pro ar).
+> **Vocês não precisam de nada daqui para terminar o encontro 8.** O básico — `.env.local`, `src/config.js`, `app.use(cors())` — já está em `02-atividade-alunos.md` e é suficiente para a lista carregar com carregando/erro tratados. Venham aqui se: quiserem entender CORS com mais profundidade, a API do grupo usar Fastify em vez de Express, precisarem confirmar o CORS sem depender do navegador, ou esbarrarem num erro que a tabela do encontro 8 não cobriu. Duas partes daqui voltam a ser úteis mais pra frente — o CORS restrito por origem (encontro 9, quando entram os cabeçalhos do login) e o aviso sobre HTTPS (encontro 16, quando o front for pro ar).
 
 ---
 

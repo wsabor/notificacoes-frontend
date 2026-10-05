@@ -52,7 +52,7 @@ Não deve sobrar nenhum erro. Depois, no navegador: criem uma notificação esco
 
 ## Passo 5 — Commit
 
-Segue o fluxo normal ([`guia-fluxo-git-diario.md`](guia-fluxo-git-diario.md)):
+Segue o fluxo normal ([`guia-fluxo-git-diario.md`](../guia-fluxo-git-diario.md)):
 
 ```bash
 git add .
@@ -76,4 +76,4 @@ Pode entrar junto com o primeiro commit do encontro 8 — não precisa de branch
 4. Sempre `"PUSH"` — é o valor inicial do `useState("PUSH")`, e nada nunca muda.
 5. A notificação criada não aparece — ela tem `canal: "PUSH"`, e o filtro "E-mail" só mostra `n.canal === "EMAIL"`. Parece que o formulário "perdeu" a notificação, mas na real ela está lá, só que classificada errado.
 
-**Onde isso já foi corrigido:** `docs/aulas/02-atividade-alunos.md` (Passo 4) e `src/components/NovaNotificacaoForm.jsx` deste repositório já têm o `<select>`. Este mini-fix é para os repositórios dos **grupos**, que replicaram o bug original.
+**Onde isso já foi corrigido:** `02-atividade-alunos.md` desta aula (Passo 4) e `src/components/NovaNotificacaoForm.jsx` deste repositório já têm o `<select>`. Este mini-fix é para os repositórios dos **grupos**, que replicaram o bug original.

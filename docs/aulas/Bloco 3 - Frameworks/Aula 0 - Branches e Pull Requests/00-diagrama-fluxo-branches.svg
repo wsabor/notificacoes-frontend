@@ -1,0 +1,60 @@
+<svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#14201E"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="380" fill="#FAFAF7"/>
+
+  <!-- linha main -->
+  <line x1="60" y1="60" x2="840" y2="60" stroke="#0F4D46" stroke-width="3"/>
+  <text x="60" y="40" font-size="13" font-weight="700" fill="#0F4D46">main (repositório do grupo)</text>
+
+  <circle cx="100" cy="60" r="7" fill="#0F4D46"/>
+  <circle cx="840" cy="60" r="7" fill="#0F4D46"/>
+  <text x="840" y="85" text-anchor="end" font-size="11" fill="#5A6B68" font-family="Consolas, monospace">merge do PR aprovado</text>
+
+  <!-- branches individuais -->
+  <!-- aluno 1 -->
+  <path d="M 100 60 C 150 60 150 150 200 150" fill="none" stroke="#5A6B68" stroke-width="2"/>
+  <line x1="200" y1="150" x2="420" y2="150" stroke="#5A6B68" stroke-width="2"/>
+  <circle cx="420" cy="150" r="6" fill="#5A6B68"/>
+  <text x="220" y="140" font-size="12" fill="#14201E">branch: <tspan font-family="Consolas, monospace" fill="#5A6B68">integrante-1</tspan></text>
+
+  <!-- aluno 2 -->
+  <path d="M 100 60 C 150 60 150 220 200 220" fill="none" stroke="#5A6B68" stroke-width="2"/>
+  <line x1="200" y1="220" x2="420" y2="220" stroke="#5A6B68" stroke-width="2"/>
+  <circle cx="420" cy="220" r="6" fill="#5A6B68"/>
+  <text x="220" y="210" font-size="12" fill="#14201E">branch: <tspan font-family="Consolas, monospace" fill="#5A6B68">integrante-2</tspan></text>
+
+  <!-- aluno 3 -->
+  <path d="M 100 60 C 150 60 150 290 200 290" fill="none" stroke="#5A6B68" stroke-width="2"/>
+  <line x1="200" y1="290" x2="420" y2="290" stroke="#5A6B68" stroke-width="2"/>
+  <circle cx="420" cy="290" r="6" fill="#5A6B68"/>
+  <text x="220" y="280" font-size="12" fill="#14201E">branch: <tspan font-family="Consolas, monospace" fill="#5A6B68">integrante-3</tspan></text>
+
+  <!-- decisão do grupo -->
+  <polygon points="530,190 590,220 530,250 470,220" fill="#FFFFFF" stroke="#FF4A26" stroke-width="2"/>
+  <text x="530" y="216" text-anchor="middle" font-size="10" font-weight="700" fill="#14201E">Grupo</text>
+  <text x="530" y="229" text-anchor="middle" font-size="10" font-weight="700" fill="#14201E">escolhe</text>
+
+  <line x1="420" y1="150" x2="500" y2="205" stroke="#5A6B68" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <line x1="420" y1="220" x2="470" y2="220" stroke="#5A6B68" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <line x1="420" y1="290" x2="500" y2="235" stroke="#5A6B68" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+  <!-- branch escolhida -> PR -> main -->
+  <line x1="590" y1="220" x2="700" y2="220" stroke="#FF4A26" stroke-width="2.5" marker-end="url(#seta)"/>
+  <text x="645" y="212" text-anchor="middle" font-size="11" font-weight="700" fill="#FF4A26">Pull Request</text>
+
+  <path d="M 700 220 C 750 220 780 130 800 65" fill="none" stroke="#FF4A26" stroke-width="2.5" marker-end="url(#seta)"/>
+
+  <!-- legenda -->
+  <g transform="translate(60,330)">
+    <rect x="0" y="0" width="780" height="35" rx="8" fill="#F2F3F0" stroke="#E0E2DC"/>
+    <line x1="15" y1="17" x2="45" y2="17" stroke="#5A6B68" stroke-width="2"/>
+    <text x="55" y="21" font-size="11" fill="#14201E">Trabalho individual (todo mundo commita)</text>
+    <line x1="360" y1="17" x2="390" y2="17" stroke="#FF4A26" stroke-width="2.5"/>
+    <text x="400" y="21" font-size="11" fill="#14201E">Caminho da branch escolhida até a main</text>
+  </g>
+</svg>
