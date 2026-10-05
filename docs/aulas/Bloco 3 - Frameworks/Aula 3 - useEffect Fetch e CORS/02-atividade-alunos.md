@@ -23,23 +23,25 @@
 
 Cada grupo tem sua API rodando num container no servidor da escola, num único IP e uma porta por grupo:
 
-| Grupo | Porta | URL base da API |
-| --- | --- | --- |
-| 1 | 8201 | `http://10.187.226.125:8201` |
-| 2 | 8202 | `http://10.187.226.125:8202` |
-| 3 | 8203 | `http://10.187.226.125:8203` |
-| 4 | 8204 | `http://10.187.226.125:8204` |
-| 5 | 8205 | `http://10.187.226.125:8205` |
-| 6 | 8206 | `http://10.187.226.125:8206` |
-| 7 | 8207 | `http://10.187.226.125:8207` |
-| 8 | 8208 | `http://10.187.226.125:8208` |
+| Grupo | Porta | URL base da API              |
+| ----- | ----- | ---------------------------- |
+| 1     | 8201  | `http://10.187.226.125:8201` |
+| 2     | 8202  | `http://10.187.226.125:8202` |
+| 3     | 8203  | `http://10.187.226.125:8203` |
+| 4     | 8204  | `http://10.187.226.125:8204` |
+| 5     | 8205  | `http://10.187.226.125:8205` |
+| 6     | 8206  | `http://10.187.226.125:8206` |
+| 7     | 8207  | `http://10.187.226.125:8207` |
+| 8     | 8208  | `http://10.187.226.125:8208` |
 
 > **Só funciona na rede da escola.** `10.187.226.125` é um IP **privado** — de casa, sem VPN, não há como alcançar; o `fetch` vai dar timeout. Isso não é bug do código.
 
 Com o `npm run dev` do front-end rodando, abra o console do navegador (F12) **na aba do seu projeto** e cole, trocando a porta pela do **seu** grupo:
 
 ```js
-fetch('http://10.187.226.125:8203/notificacoes').then(r => r.json()).then(console.log)
+fetch("http://10.187.226.125:8203/notificacoes")
+  .then((r) => r.json())
+  .then(console.log);
 ```
 
 Se aparecer um erro vermelho mencionando **"CORS policy"**, ótimo — era o esperado. Não é bug de vocês: essa API foi escrita no 3º semestre, **antes** de existir um front-end para consumi-la, então quase certamente ainda não trata CORS. Vamos entender por quê antes de corrigir.
@@ -112,7 +114,7 @@ Máquinas diferentes, endereços diferentes → **origens diferentes**. (O mesmo
 
 ### O que o CORS bloqueia
 
-Por padrão, o navegador **não deixa** uma página de uma origem ler a resposta de uma API de **outra origem**. Isso se chama política de *same-origin*, e o CORS (*Cross-Origin Resource Sharing*) é o mecanismo que permite abrir exceções.
+Por padrão, o navegador **não deixa** uma página de uma origem ler a resposta de uma API de **outra origem**. Isso se chama política de _same-origin_, e o CORS (_Cross-Origin Resource Sharing_) é o mecanismo que permite abrir exceções.
 
 ### Por que isso existe
 
@@ -178,11 +180,11 @@ Dois argumentos:
 
 ### O array de dependências, os três casos
 
-| Você escreve | Significa |
-| --- | --- |
-| `[]` (array vazio) | Roda **uma vez**, quando o componente aparece pela primeira vez. |
-| `[filtro]` | Roda na primeira vez **e** toda vez que `filtro` mudar. |
-| (omitido) | Roda depois de **toda** renderização. Quase nunca é o que você quer. |
+| Você escreve       | Significa                                                            |
+| ------------------ | -------------------------------------------------------------------- |
+| `[]` (array vazio) | Roda **uma vez**, quando o componente aparece pela primeira vez.     |
+| `[filtro]`         | Roda na primeira vez **e** toda vez que `filtro` mudar.              |
+| (omitido)          | Roda depois de **toda** renderização. Quase nunca é o que você quer. |
 
 Para buscar a lista uma vez quando a tela carrega, o caso é `[]`.
 
@@ -237,11 +239,19 @@ Lendo o resto por partes:
 ### Mostrando os três estados na tela
 
 ```jsx
-{carregando && <p className="text-gray-500">Carregando notificações...</p>}
-{erro && <p className="text-red-600">Não foi possível carregar. Tente novamente.</p>}
-{!carregando && !erro && (
-  <NotificationList notificacoes={notificacoesVisiveis} />
-)}
+{
+  carregando && <p className="text-gray-500">Carregando notificações...</p>;
+}
+{
+  erro && (
+    <p className="text-red-600">Não foi possível carregar. Tente novamente.</p>
+  );
+}
+{
+  !carregando && !erro && (
+    <NotificationList notificacoes={notificacoesVisiveis} />
+  );
+}
 ```
 
 Um bloco por estado. Só um aparece de cada vez. Isso é a heurística **"visibilidade do status do sistema"** (encontro 4): o usuário nunca fica sem saber o que está acontecendo.
@@ -331,19 +341,19 @@ Grupo escolhe uma branch, abre PR, revisa, faz merge. Todos rodam `git checkout 
 
 ## Erros comuns de hoje
 
-| Sintoma | Causa provável |
-| --- | --- |
-| `fetch` sempre cai no `catch` com erro de rede | Fora da rede da escola, porta errada no `.env.local`, ou container da API desligado. Teste a URL direto (Passo 1). |
-| Erro vermelho "CORS policy" no console | O `cors` não está ativo na API do grupo, ou a mudança não foi **reimplantada no container**. Resolve **no backend**, e precisa reiniciar o processo lá. |
-| A tela pisca "nenhuma notificação" e depois mostra a lista | Faltou o estado `carregando` — a lista vazia aparece enquanto os dados vêm. |
-| A tela fica em branco quando a API cai | O erro não está sendo capturado/mostrado. Confira o `try/catch` e o bloco `{erro && ...}`. |
-| A busca dispara sem parar / a página trava | `useEffect` sem o `[]` no final, ou `fetch` chamado direto no corpo do componente. |
-| API respondeu 404 mas o código seguiu como se tivesse dado certo | Faltou `if (!resposta.ok) throw ...`. O `fetch` não lança erro para status HTTP. |
-| `dados.map is not a function` | A API não devolveu um array (talvez `{ notificacoes: [...] }`). Confira o formato no `CONTRATO-API.md` e ajuste. |
-| `Unexpected token < in JSON` | A resposta não era JSON (às vezes é uma página de erro HTML). Cheque a URL e se a API está no ar. |
-| Mudei o `.env.local` e nada aconteceu | Faltou reiniciar o `npm run dev` — o Vite só lê `.env` na inicialização. |
-| Funciona no meu notebook, quebra no do colega | O colega não tem `.env.local` próprio (ele é ignorado pelo Git de propósito). Precisa copiar do `.env.example` e ajustar. |
-| Warning "can't perform a state update on an unmounted component" | A tela trocou antes da resposta chegar. Por ora, sem problema; a forma robusta (cleanup do `useEffect`) vem depois. |
+| Sintoma                                                          | Causa provável                                                                                                                                          |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fetch` sempre cai no `catch` com erro de rede                   | Fora da rede da escola, porta errada no `.env.local`, ou container da API desligado. Teste a URL direto (Passo 1).                                      |
+| Erro vermelho "CORS policy" no console                           | O `cors` não está ativo na API do grupo, ou a mudança não foi **reimplantada no container**. Resolve **no backend**, e precisa reiniciar o processo lá. |
+| A tela pisca "nenhuma notificação" e depois mostra a lista       | Faltou o estado `carregando` — a lista vazia aparece enquanto os dados vêm.                                                                             |
+| A tela fica em branco quando a API cai                           | O erro não está sendo capturado/mostrado. Confira o `try/catch` e o bloco `{erro && ...}`.                                                              |
+| A busca dispara sem parar / a página trava                       | `useEffect` sem o `[]` no final, ou `fetch` chamado direto no corpo do componente.                                                                      |
+| API respondeu 404 mas o código seguiu como se tivesse dado certo | Faltou `if (!resposta.ok) throw ...`. O `fetch` não lança erro para status HTTP.                                                                        |
+| `dados.map is not a function`                                    | A API não devolveu um array (talvez `{ notificacoes: [...] }`). Confira o formato no `CONTRATO-API.md` e ajuste.                                        |
+| `Unexpected token < in JSON`                                     | A resposta não era JSON (às vezes é uma página de erro HTML). Cheque a URL e se a API está no ar.                                                       |
+| Mudei o `.env.local` e nada aconteceu                            | Faltou reiniciar o `npm run dev` — o Vite só lê `.env` na inicialização.                                                                                |
+| Funciona no meu notebook, quebra no do colega                    | O colega não tem `.env.local` próprio (ele é ignorado pelo Git de propósito). Precisa copiar do `.env.example` e ajustar.                               |
+| Warning "can't perform a state update on an unmounted component" | A tela trocou antes da resposta chegar. Por ora, sem problema; a forma robusta (cleanup do `useEffect`) vem depois.                                     |
 
 ---
 

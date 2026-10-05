@@ -23,7 +23,7 @@
 
 ### O problema
 
-O projeto de vocês tem **um** `index.html`. Quando o usuário navega, o JavaScript troca o que está na tela — a página nunca recarrega de fato. Isso é uma **SPA** (*Single Page Application*).
+O projeto de vocês tem **um** `index.html`. Quando o usuário navega, o JavaScript troca o que está na tela — a página nunca recarrega de fato. Isso é uma **SPA** (_Single Page Application_).
 
 Só que, sem rotas, algumas coisas quebram:
 
@@ -48,7 +48,7 @@ import { BrowserRouter } from "react-router-dom";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <App />
-  </BrowserRouter>
+  </BrowserRouter>,
 );
 ```
 
@@ -84,7 +84,7 @@ O que estava dentro do `App.jsx` (lista, filtros, formulário, os `useState`, o 
 
   ```jsx
   const navigate = useNavigate();
-  navigate("/");   // vai para a home
+  navigate("/"); // vai para a home
   ```
 
 - **`<Navigate to="/login" />`** — um componente que, ao ser renderizado, redireciona na hora. Útil dentro de condições.
@@ -176,12 +176,12 @@ const { token, login, logout } = useAuth();
 
 "CRUD" são as quatro operações sobre um recurso, e cada uma tem um método HTTP:
 
-| Operação | Método HTTP | No projeto | Precisa de token? |
-| --- | --- | --- | --- |
-| **C**reate (criar) | `POST` | criar notificação | sim |
-| **R**ead (ler) | `GET` | listar notificações | não |
-| **U**pdate (atualizar) | `PUT` / `PATCH` | marcar como lida | sim |
-| **D**elete (apagar) | `DELETE` | excluir notificação | sim |
+| Operação               | Método HTTP     | No projeto          | Precisa de token? |
+| ---------------------- | --------------- | ------------------- | ----------------- |
+| **C**reate (criar)     | `POST`          | criar notificação   | sim               |
+| **R**ead (ler)         | `GET`           | listar notificações | não               |
+| **U**pdate (atualizar) | `PUT` / `PATCH` | marcar como lida    | sim               |
+| **D**elete (apagar)    | `DELETE`        | excluir notificação | sim               |
 
 **Ler é aberto; escrever exige login.** Faz sentido: qualquer um pode ver o mural, mas só quem está autenticado pode mexer nele.
 
@@ -198,7 +198,7 @@ await fetch(`${API_URL}/notificacoes`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`,
+    Authorization: `Bearer ${token}`,
   },
   body: JSON.stringify(novaNotificacao),
 });
@@ -271,7 +271,10 @@ function Login() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-sm mx-auto p-4 flex flex-col gap-2">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-sm mx-auto p-4 flex flex-col gap-2"
+    >
       <input
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -358,16 +361,16 @@ Grupo escolhe uma branch, abre PR, revisa, faz merge. Todos rodam `git checkout 
 
 ## Erros comuns de hoje
 
-| Sintoma | Causa provável |
-| --- | --- |
-| `useAuth()` devolve `null` / erro ao desestruturar | O componente não está **dentro** do `<AuthProvider>`. Confira o `main.jsx`. |
-| Recarreguei numa rota tipo `/login` e deu 404 | Servidor não configurado para SPA. No `vite dev` costuma funcionar; em build/deploy precisa de fallback para `index.html`. |
-| Loguei, mas a próxima tela diz "não autorizado" | O token não está indo no header, ou o formato não é `Bearer <token>`, ou você mandou `Authorization` num `GET` que a API não espera. |
-| Fiz logout mas o app continua "logado" | `logout` não limpou o `localStorage`, ou algum componente guardou o token numa cópia própria em vez de ler do Context. |
-| Depois de recarregar, caí no login mesmo tendo logado antes | O `useState` do token não está lendo do `localStorage` na inicialização (`useState(() => localStorage.getItem("token"))`). |
-| `POST` volta com erro de CORS só agora | A API precisa liberar os headers `Content-Type` e `Authorization` no CORS. Ajuste no backend. |
-| A notificação criada só aparece depois de recarregar | Faltou atualizar o estado da lista no front depois do `POST` dar certo. |
-| Redireciona para `/login` em loop | A rota `/login` também está dentro da `RotaProtegida`. Só a `/` deve ser protegida. |
+| Sintoma                                                     | Causa provável                                                                                                                       |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `useAuth()` devolve `null` / erro ao desestruturar          | O componente não está **dentro** do `<AuthProvider>`. Confira o `main.jsx`.                                                          |
+| Recarreguei numa rota tipo `/login` e deu 404               | Servidor não configurado para SPA. No `vite dev` costuma funcionar; em build/deploy precisa de fallback para `index.html`.           |
+| Loguei, mas a próxima tela diz "não autorizado"             | O token não está indo no header, ou o formato não é `Bearer <token>`, ou você mandou `Authorization` num `GET` que a API não espera. |
+| Fiz logout mas o app continua "logado"                      | `logout` não limpou o `localStorage`, ou algum componente guardou o token numa cópia própria em vez de ler do Context.               |
+| Depois de recarregar, caí no login mesmo tendo logado antes | O `useState` do token não está lendo do `localStorage` na inicialização (`useState(() => localStorage.getItem("token"))`).           |
+| `POST` volta com erro de CORS só agora                      | A API precisa liberar os headers `Content-Type` e `Authorization` no CORS. Ajuste no backend.                                        |
+| A notificação criada só aparece depois de recarregar        | Faltou atualizar o estado da lista no front depois do `POST` dar certo.                                                              |
+| Redireciona para `/login` em loop                           | A rota `/login` também está dentro da `RotaProtegida`. Só a `/` deve ser protegida.                                                  |
 
 ---
 
@@ -388,7 +391,7 @@ Grupo escolhe uma branch, abre PR, revisa, faz merge. Todos rodam `git checkout 
 
 ## Se o CORS bloquear só o login/CRUD (não o `GET`)
 
-O `GET` da lista funciona desde o encontro 8. Se agora, com login e CRUD, aparecer erro de CORS de novo, o motivo mais comum é a API do grupo aceitar a origem mas não os cabeçalhos extras (`Authorization`, `Content-Type`) nem os métodos de escrita no *preflight*. Ver "CORS além do básico" em [`extra-consumir-api-do-servidor.md`](extra-consumir-api-do-servidor.md).
+O `GET` da lista funciona desde o encontro 8. Se agora, com login e CRUD, aparecer erro de CORS de novo, o motivo mais comum é a API do grupo aceitar a origem mas não os cabeçalhos extras (`Authorization`, `Content-Type`) nem os métodos de escrita no _preflight_. Ver "CORS além do básico" em [`extra-consumir-api-do-servidor.md`](<../Aula 3 - useEffect Fetch e CORS/extra-consumir-api-do-servidor.md>).
 
 ---
 
